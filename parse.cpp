@@ -66,7 +66,7 @@ int Parser::parseXML( std::map< std::pair< QString , QString > , QString> & m )
                 else if (widgetType.compare("QListWidget") == 0
 			 || widgetType.compare("QTableView") == 0)
                 {
-                    m[std::make_pair(widgetType, widgetName)] = "std::map<QString,bool>";
+                    m[std::make_pair(widgetType, widgetName)] = "std::map<std::pair<unsigned long,QString>,bool>";
                 }
                 // Store values into the dictionary
     //            m[std::make_pair(widgetType, xml.attributes().at(1).value().toString())] = "";

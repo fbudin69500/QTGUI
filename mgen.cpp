@@ -110,10 +110,11 @@ void MGen::genIncludes(std::ofstream & headerstream)
         {
           AdditionalIncludeLibraries( headerstream , "QString" ) ;
         }
-        if( (it->second).compare( "std::map<QString,bool>" ) == 0 )
+        if( (it->second).compare( "std::map<std::pair<unsigned long,QString>,bool>" ) == 0 )
         {
           AdditionalIncludeLibraries( headerstream , "QString" ) ;
           AdditionalIncludeLibraries( headerstream , "map" ) ;
+          AdditionalIncludeLibraries( headerstream , "utility" ) ;
         }
         it++;
     }

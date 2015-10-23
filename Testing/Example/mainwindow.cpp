@@ -64,11 +64,13 @@ void MainWindow::on_pushButton_clicked()
 
     m.setspinBox(ui->spinBox->value());
 
-    std::map<QString,bool> itemList ;
-    for( int i = 0 ; i < ui->listWidget->count() ; i++ )
+    std::map<std::pair<unsigned long,QString>,bool> itemList ;
+    for( unsigned long i = 0 ; i < ui->listWidget->count() ; i++ )
     {
       QListWidgetItem *currentItem = ui->listWidget->item(i) ;
-      itemList[ currentItem->text() ] = static_cast<bool>(currentItem->checkState() ) ;
+      std::pair<unsigned long,QString> attribute ;
+      attribute = std::make_pair(i,currentItem->text());
+      itemList[ attribute ] = static_cast<bool>(currentItem->checkState() ) ;
     }
     m.setlistWidget(itemList) ;
     Save_QTGUIExample save;
@@ -123,12 +125,12 @@ void MainWindow::on_pushButton_2_clicked()
     ui->textEdit_2->setText(txt2);
 
 
-    std::map<QString,bool> itemList ;
+    std::map<std::pair<unsigned long,QString>,bool> itemList ;
     itemList = m.getlistWidget() ;
     ui->listWidget->clear() ;
-    for( std::map<QString,bool>::iterator it = itemList.begin() ; it != itemList.end() ; it++ )
+    for( std::map<std::pair<unsigned long,QString>,bool>::iterator it = itemList.begin() ; it != itemList.end() ; it++ )
     {
-      QListWidgetItem *item = new QListWidgetItem( it->first , ui->listWidget ) ;
+      QListWidgetItem *item = new QListWidgetItem( it->first.second , ui->listWidget ) ;
       item->setCheckState( it->second != 0 ? Qt::Checked : Qt::Unchecked ) ;
     }
 }

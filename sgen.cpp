@@ -211,7 +211,7 @@ void SGen::genSavetoXMLMethod(std::ofstream & savestream,MapType::const_iterator
             //can just output the qstring
             genMethodLine(savestream,"writer.writeAttribute(\"value\",QString::number(m.get"+std::string(it->first.second.toStdString())+"()));",tab_index);
         }
-        else if( !it->second.compare( "std::map<QString,bool>" ) )
+        else if( !it->second.compare( "std::map<std::pair<unsigned long,QString>,bool>" ) )
         {
             genMethodLine(savestream,"std::map<QString,bool> map_"+ std::string(it->first.second.toStdString()) + " = m.get"+std::string(it->first.second.toStdString())+"();",tab_index);
             genMethodLine(savestream,"std::map<QString,bool>::iterator it_"+std::string(it->first.second.toStdString()) + " = map_"+std::string(it->first.second.toStdString())+".begin();",tab_index);
