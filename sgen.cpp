@@ -213,15 +213,15 @@ void SGen::genSavetoXMLMethod(std::ofstream & savestream,MapType::const_iterator
         }
         else if( !it->second.compare( "std::map<QString,bool>" ) )
         {
-            genMethodLine(savestream,"std::map<QString,bool> map = m.get"+std::string(it->first.second.toStdString())+"();",tab_index);
-            genMethodLine(savestream,"std::map<QString,bool>::iterator it = map.begin();",tab_index);
-            genMethodLine(savestream,"for( int count = 0 ; it != map.end() ; count++ , it++ )",tab_index);
+            genMethodLine(savestream,"std::map<QString,bool> map_"+ std::string(it->first.second.toStdString()) + " = m.get"+std::string(it->first.second.toStdString())+"();",tab_index);
+            genMethodLine(savestream,"std::map<QString,bool>::iterator it_"+std::string(it->first.second.toStdString()) + " = map_"+std::string(it->first.second.toStdString())+".begin();",tab_index);
+            genMethodLine(savestream,"for( int count = 0 ; it_"+std::string(it->first.second.toStdString())+" != map_"+std::string(it->first.second.toStdString())+".end() ; count++ , it_"+std::string(it->first.second.toStdString())+"++ )",tab_index);
             genMethodLine(savestream,"{",tab_index);
             genMethodLine(savestream, "std::string item = \"item\" + QString::number(count).toStdString() ;" , tab_index + 1 ) ;
             genMethodLine(savestream, "std::string itemName = item+\"Name\" ;" , tab_index + 1 ) ;
-            genMethodLine(savestream,"writer.writeAttribute(itemName.c_str(),it->first);",tab_index+1);
+            genMethodLine(savestream,"writer.writeAttribute(itemName.c_str(),it_"+std::string(it->first.second.toStdString())+"->first);",tab_index+1);
             genMethodLine(savestream, "std::string itemState = item+\"isChecked\" ;" , tab_index + 1 ) ;
-            genMethodLine(savestream,"writer.writeAttribute(itemState.c_str(),QString::number(it->second));",tab_index+1);
+            genMethodLine(savestream,"writer.writeAttribute(itemState.c_str(),QString::number(it_"+std::string(it->first.second.toStdString())+"->second));",tab_index+1);
             genMethodLine(savestream,"}",tab_index);
         }
         it++;
