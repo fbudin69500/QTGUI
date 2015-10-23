@@ -1,5 +1,4 @@
 
-find_package(Qt4 REQUIRED)
-include(${QT_USE_FILE})
+find_package(Qt5Widgets REQUIRED)
 
 include(${QtToCppXML_CMAKE_DIR}/QtToCppXML.cmake)

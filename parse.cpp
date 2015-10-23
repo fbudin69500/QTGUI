@@ -63,7 +63,8 @@ int Parser::parseXML( std::map< std::pair< QString , QString > , QString> & m )
                 {
                     m[std::make_pair(widgetType, widgetName)] = "int";
                 }
-                else if (widgetType.compare("QListWidget") == 0)
+                else if (widgetType.compare("QListWidget") == 0
+			 || widgetType.compare("QTableView") == 0)
                 {
                     m[std::make_pair(widgetType, widgetName)] = "std::map<std::pair<unsigned long,QString>,bool>";
                 }

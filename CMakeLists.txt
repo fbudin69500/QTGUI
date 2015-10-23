@@ -6,8 +6,7 @@ find_package( SlicerExecutionModel REQUIRED )
 include( ${SlicerExecutionModel_USE_FILE} )
 include(${GenerateCLP_USE_FILE})
 
-find_package(Qt4 REQUIRED)
-include(${QT_USE_FILE})
+find_package(Qt5Widgets REQUIRED)
 
 set( MySources
 lgen.cpp
@@ -26,7 +25,7 @@ GENERATECLP(MySources QtToCppXML.xml)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${QtToCppXML_BINARY_DIR}/bin)
 
 add_executable( QtToCppXML ${MySources} )
-target_link_libraries( QtToCppXML ${QT_LIBRARIES})
+target_link_libraries( QtToCppXML Qt5::Widgets)
 
 # --------------------------------------------------------------------------
 # Configure support files
