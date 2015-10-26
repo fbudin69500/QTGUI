@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1125</width>
-    <height>357</height>
+    <height>523</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -320,6 +320,16 @@ p, li { white-space: pre-wrap; }
       <enum>Checked</enum>
      </property>
     </item>
+   </widget>
+   <widget class="QTableView" name="tableView">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>250</y>
+      <width>256</width>
+      <height>192</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

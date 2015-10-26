@@ -32,6 +32,7 @@ void LGen::generateClass()
         out << "#include <QString>\n" ;
         out << "#include <QDebug>\n" ;
         out << "#include <map>\n" ;
+        out << "#include <list>\n" ;
         out << "#include <QFile>\n" ;
         out << "#include <QStringList>\n" ;
         out << "#include <iostream>\n" ;
@@ -172,6 +173,42 @@ void LGen::generateClass()
                 out << m_indent << m_indent << m_indent << m_indent << m_indent << "model.set" << it->first.second ;
                 out << "(" << mapName << ") ;\n " ;
             }
+           /* else if( (it->second).compare( "std::vector<std::vector<QString> >" ) == 0 )
+            {
+                QString tableName = it->first.second + "Table" ;
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << "std::vector<std::vector<QString> >" << tableName << " ;\n" ;
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << "QList< std::pair< QString , QString > > currentAttributes = attributes[ \"" << it->first.second << "\" ];\n" ;
+                //there should be at least 4 elements to load anything: type, name, itemName and itemIsChecked(). Additionally, there has to be an even number of elements
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << "if( (currentAttributes.size()-2) % 3 != 0 || currentAttributes.size() < 5 )\n" ;
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << "{\n" ;
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "std::cerr << \"Wrong number of attributes for \"<< it->first.second.toStdString() << \":\" << currentAttributes.size() << std::endl ;\n" ;
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "continue ;\n" ;
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << "}\n" ;
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << "currentAttributes.removeFirst();\n";//the first item should be the type
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << "currentAttributes.removeFirst();\n";//the 2nd item should be the name
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << "int itemNb = 0 ;\n";
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << "while( currentAttributes.size() > 1 )\n" ;
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << "{\n" ;
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "std::pair<QString , QString> attributeName = currentAttributes[ 0 ];\n" ;
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "QString name = QString(\"item\") + QString::number(itemNb) + \"Name\";\n" ;
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "std::pair<QString , QString> attributeIsChecked = currentAttributes[ 1 ];\n" ;
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "QString isChecked = QString(\"item\") + QString::number(itemNb) + \"isChecked\";\n" ;
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "std::pair<QString , QString> attributePosition = currentAttributes[ 2 ];\n" ;
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "QString position = QString(\"item\") + QString::number(itemNb) + \"Position\";\n" ;
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "if( !attributeName.first.compare(name) && !attributeIsChecked.first.compare(isChecked) && !attributePosition.first.compare(position))\n";
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "{\n";
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "std::pair<unsigned long,QString> attribute ;\n";
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "attribute = std::make_pair( attributePosition.second.toULong() , attributeName.second );\n";
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << mapName << "[ attribute ] = ( attributeIsChecked.second.toInt() != 0 ? true : false ) ;\n";
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "}\n";
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "currentAttributes.removeFirst();\n";//the first item should be the itemXName
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "currentAttributes.removeFirst();\n";//the first item should be the itemXisChecked
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "currentAttributes.removeFirst();\n";//the first item should be the itemXPosition
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << m_indent << "itemNb++;\n";
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << "}\n" ;
+                out << m_indent << m_indent << m_indent << m_indent << m_indent << "model.set" << it->first.second ;
+                out << "(" << mapName << ") ;\n " ;
+            }*/
             out << m_indent << m_indent << m_indent << "}\n"<<m_indent<<m_indent<<"}" ;
             out << "\n\n" ;
         }

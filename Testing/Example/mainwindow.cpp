@@ -2,6 +2,7 @@
 
 #include <QDebug>
 #include <iostream>
+#include <QStandardItemModel>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -9,6 +10,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 
     ui->setupUi(this);
+    QStandardItemModel *model = new QStandardItemModel(2,3,this); //2 Rows and 3 Columns
+    model->setHorizontalHeaderItem(0, new QStandardItem(QString("1Header")));
+    model->setHorizontalHeaderItem(1, new QStandardItem(QString("2Header")));
+    model->setHorizontalHeaderItem(2, new QStandardItem(QString("3Header")));
+    ui->tableView->setModel(model);
 }
 
 MainWindow::~MainWindow()
@@ -83,6 +89,22 @@ void MainWindow::on_pushButton_clicked()
       itemList2[ attribute ] = static_cast<bool>(currentItem->checkState() ) ;
     }
     m.setlistWidget_2(itemList2) ;
+    std::vector<std::vector<QString> > my_table ;
+    if( ui->tableView->model() )
+    {
+      my_table.resize(ui->tableView->model()->rowCount());
+      for( unsigned long i = 0 ; i < ui->tableView->model()->rowCount() ; i++ )
+      {
+        std::vector<QString> my_list(ui->tableView->model()->columnCount()) ;
+        for( unsigned long j = 0 ; j < ui->tableView->model()->columnCount() ; j++ )
+        {
+          QModelIndex index = ui->tableView->model()->index(i,j,QModelIndex());
+          my_list[ j ] = ui->tableView->model()->data(index).toString();
+        }
+        my_table[ i ] = my_list ;
+      }
+    }
+    m.settableView(my_table);
     Save_QTGUIExample save;
     std::string filename = "data1.xml";
     save.save(m,filename);

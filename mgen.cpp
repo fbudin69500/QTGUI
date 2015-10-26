@@ -144,11 +144,17 @@ void MGen::genIncludes(std::ofstream & headerstream)
         {
           AdditionalIncludeLibraries( headerstream , "QString" ) ;
         }
-        if( (it->second).compare( "std::map<std::pair<unsigned long,QString>,bool>" ) == 0 )
+        else if( (it->second).compare( "std::map<std::pair<unsigned long,QString>,bool>" ) == 0 )
         {
           AdditionalIncludeLibraries( headerstream , "QString" ) ;
           AdditionalIncludeLibraries( headerstream , "map" ) ;
           AdditionalIncludeLibraries( headerstream , "utility" ) ;
+        }
+        else if( (it->second).compare( "std::vector<std::vector<QString> >" ) == 0 )
+        {
+          AdditionalIncludeLibraries( headerstream , "QString" ) ;
+          AdditionalIncludeLibraries( headerstream , "vector" ) ;
+          AdditionalIncludeLibraries( headerstream , "stdexcept" ) ;
         }
         it++;
     }
@@ -250,8 +256,23 @@ void MGen::genSet(MapType::const_iterator & it, std::ofstream & stream, bool hea
         stream<<"{"<<std::endl;
 
     }
-
     //generate body of setter
+    // If the input is a tableview, then it has to have the same number of elements on each line
+    if( (it->second).compare( "std::vector<std::vector<QString> >" ) == 0 )
+    {
+          stream<<m_indent<<m_indent<<"if( !a.empty() )"<<std::endl;
+          stream<<m_indent<<m_indent<<"{"<<std::endl;
+          stream<<m_indent<<m_indent<<m_indent<<"std::vector<std::vector<QString> >::iterator it = a.begin(); "<<std::endl;
+          stream<<m_indent<<m_indent<<m_indent<<"std::vector<std::vector<QString> >::size_type first_size = a[0].size();"<<std::endl;
+          stream<<m_indent<<m_indent<<m_indent<<"for( ; it != a.end() ; ++it )"<<std::endl;
+          stream<<m_indent<<m_indent<<m_indent<<"{"<<std::endl;
+          stream<<m_indent<<m_indent<<m_indent<<m_indent<<"if( it->size() != first_size )"<<std::endl;
+          stream<<m_indent<<m_indent<<m_indent<<m_indent<<"{"<<std::endl;
+          stream<<m_indent<<m_indent<<m_indent<<m_indent<<m_indent<<"throw std::runtime_error(\"Failed: All rows do not have the same size\");"<<std::endl;
+          stream<<m_indent<<m_indent<<m_indent<<m_indent<<"}"<<std::endl;
+          stream<<m_indent<<m_indent<<m_indent<<"}"<<std::endl;
+          stream<<m_indent<<m_indent<<"}"<<std::endl;
+    }
     stream<<m_indent<<m_indent<<
                  it->first.second.toStdString()<<"=a;"
               <<std::endl;

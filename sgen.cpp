@@ -228,6 +228,29 @@ void SGen::genSavetoXMLMethod(std::ofstream & savestream,MapType::const_iterator
             genMethodLine(savestream , "}" , tab_index + 1 ) ;
             genMethodLine(savestream , "}" , tab_index ) ;
         }
+        else if( !it->second.compare( "std::vector<std::vector<QString> >" ) )
+        {
+            genMethodLine(savestream , "{" , tab_index ) ;
+            genMethodLine(savestream , "std::vector<std::vector<QString> > table = m.get"+std::string(it->first.second.toStdString())+"();" , tab_index + 1 ) ;
+            genMethodLine(savestream , "if( !table.empty() )" , tab_index + 1 ) ;
+            genMethodLine(savestream , "{" , tab_index + 1 ) ;
+            genMethodLine(savestream , "writer.writeAttribute(\"row\", QString::number(table.size()) );" , tab_index + 2 ) ;
+            genMethodLine(savestream , "writer.writeAttribute(\"column\", QString::number(table[0].size()) );" , tab_index + 2 ) ;
+            genMethodLine(savestream , "}" , tab_index + 1 ) ;
+            genMethodLine(savestream , "std::vector<std::vector<QString> >::iterator it_table_1 = table.begin();" , tab_index + 1 ) ;
+            genMethodLine(savestream , "for( size_t count = 0 ; it_table_1 != table.end() ; count++ , it_table_1++ )" , tab_index + 1 ) ;
+            genMethodLine(savestream , "{" , tab_index + 1 ) ;
+            genMethodLine(savestream , "std::vector<QString> list_2 = *it_table_1;" , tab_index + 2 ) ;
+            genMethodLine(savestream , "std::vector<QString>::iterator it_table_2 = list_2.begin();" , tab_index + 2 ) ;
+            genMethodLine(savestream , "for( std::vector<QString>::size_type count2 = 0 ; it_table_2 != list_2.end() ; count2++ , it_table_2++ )" , tab_index + 2 ) ;
+            genMethodLine(savestream , "{" , tab_index + 2 ) ;
+
+            genMethodLine(savestream , "std::string item = \"item_\" + QString::number(count).toStdString() + \"_\" + QString::number(count2).toStdString() ;" , tab_index + 3 ) ;
+            genMethodLine(savestream , "writer.writeAttribute(item.c_str(),*it_table_2);" , tab_index + 3 ) ;
+            genMethodLine(savestream , "}" , tab_index + 2 ) ;
+            genMethodLine(savestream , "}" , tab_index + 1 ) ;
+            genMethodLine(savestream , "}" , tab_index ) ;
+        }
         it++;
     }
     genMethodLine(savestream,"writer.writeEndElement();\n",tab_index);
